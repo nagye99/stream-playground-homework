@@ -91,44 +91,42 @@ ed by the language code "es").
      * Prints all distinct language tags of country name translations sorted in alphabetical order.
      */
     public void streamPipeline11() {
-        // TODO
+        countries.stream().flatMap(country->country.getTranslations().keySet().stream()).distinct().sorted().forEach(System.out::println);
     }
 
     /**
      * Returns the average length of country names.
      */
     public double streamPipeline12() {
-        // TODO
-        return 0;
+        return countries.stream().mapToLong(country->country.getName().length()).average().getAsDouble();
     }
 
     /**
      * Prints all distinct regions of the countries with null area.
      */
     public void streamPipeline13() {
-        // TODO
+        countries.stream().filter(country->country.getArea() == null).map(Country::getRegion).distinct().forEach(System.out::println);
     }
 
     /**
      * Returns the largest country with non-null area.
      */
     public Optional<Country> streamPipeline14() {
-        // TODO
-        return null;
+        return countries.stream().filter(country->country.getArea() != null).max(Comparator.comparing(Country::getArea));
     }
 
     /**
      * Prints the names of countries with a non-null area below 1.
      */
     public void streamPipeline15() {
-        // TODO
+        countries.stream().filter(country->country.getArea() != null).filter(country->country.getArea().compareTo(BigDecimal.valueOf(1)) == -1).map(Country::getName).forEach(System.out::println);
     }
 
     /**
      * Prints all distinct timezones of European and Asian countries.
      */
     public void streamPipeline16() {
-        // TODO
+        countries.stream().filter(country->country.getRegion() == Region.EUROPE || country.getRegion() == Region.ASIA).map(Country::getTimezones).flatMap(time->time.stream()).distinct().forEach(System.out::println);
     }
 
 }
