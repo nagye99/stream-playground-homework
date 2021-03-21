@@ -40,7 +40,7 @@ public class Homework2 {
      * Prints the longest country name translation together with its language code in the form language=translation.
      */
     public void streamPipeline3() {
-        // TODO
+        countries.stream().flatMap(country->country.getTranslations().entrySet().stream()).filter(trans->trans.toString().contains(countries.stream().flatMap(country->country.getTranslations().values().stream()).max(Comparator.comparing(t->t.length())).get())).forEach(System.out::println);
     }
 
     /**
@@ -62,7 +62,7 @@ public class Homework2 {
      * Returns whether there exists at least one capital that is a palindrome.
      */
     public boolean streamPipeline6() {
-        return countries.stream().map(Country::getCapital).anyMatch(cap->cap.toLowerCase() ==  new StringBuilder(cap.toLowerCase()).reverse().toString());
+        return countries.stream().map(Country::getCapital).filter(cap->cap != "").anyMatch(cap->cap.toLowerCase() ==  new StringBuilder(cap.toLowerCase()).reverse().toString());
     }
 
     /**
@@ -118,16 +118,14 @@ public class Homework2 {
      * Returns the list of capitals by region whose name is the same is the same as the name of their country.
      */
     public Map<Region, List<String>> streamPipeline14() {
-        return countries.stream().collect(groupingBy(Country::getRegion, filtering(country->country.getName().equals(country.getCapital()),mapping(c->c.getCapital(),toList() ))))
-        ;
+        return countries.stream().collect(groupingBy(Country::getRegion, filtering(country->country.getName().equals(country.getCapital()),mapping(c->c.getCapital(),toList() ))));
     }
 
     /**
      *  Returns a map of country name-population density pairs.
      */
-    public Map<Region, Double> streamPipeline15() {
-        // TODO
-        return null;
+    public Map<String, Double> streamPipeline15() {
+        return  countries.stream().collect(toMap(country->country.getName(), country->country.getArea() == null ? Double.NaN : country.getPopulation()/country.getArea().doubleValue()));
     }
 
 }
